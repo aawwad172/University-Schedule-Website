@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Schedule Calculator</title>
+</head>
+<body>
+    <header>
+        <h1>Schedule Calculator</h1>
+    </header>
+    <body>
+        <p>Please Enter the number of course that you want to take: &nbsp;</p>
+        
+        <!-- Input field for taking input from user -->
+        <br>
+        <fieldset>
+            <legend>Courses form</legend>
+            <div id="adding-courses-and-sections">
+                <div id="course">
+                    <form id="courses-form">
+                        <label for="">Course Name: </label>
+                        <input type="text" id="course-name">
+                        <br><br>
+                        <fieldset>
+                            <label>Section Number: </label>
+                            <input type="number" id="section-number">
+                            <br><br>
+                            <label>Section Start time: </label>
+                            <input type="time" id="section-start-time">
+                            <br><br>
+                            <label>Section Finish time: </label>
+                            <input type="time" id="section-finish-time">
+                            <br><br>
+                            <button id="add-section-button">Add Section</button>
+                        </fieldset>
+
+                        <br>
+                        <button id="adding-another-course-button">Add another Course</button>
+                        <br><br>
+                        <button type="button" id="start-calculating-button">Start Calculating</button>
+                    </form>
+                </div>
+            </div>
+        </fieldset>
+
+        <div id="calculation-result">
+            <h3>You should register the following courses</h3>
+            <table border="3" id="result-table">
+                <thead>Courses</thead>
+                <tr>
+                    <td>Course</td>
+                    <td>Section</td>
+                    <td>Time</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</body>
+</html>
