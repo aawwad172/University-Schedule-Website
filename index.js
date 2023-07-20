@@ -1,26 +1,5 @@
-/**
- * This Section class is used to create a new object of type section to store
- * section number and the duration time for each section (Start and Finish)!
- */
-class Section {
-	constructor(number, startTime, finishTime) {
-		this.SectionNumber = number;
-		this.StartTime = startTime;
-		this.FinishTime = finishTime;
-	}
-}
-
-/**
- * This Course class is used to create object for each course
- * and we store the Name of each course and an array of the section of that course!
- *
- */
-class Course {
-	constructor(courseName, ...sections) {
-		this.Name = courseName;
-		this.Sections = sections;
-	}
-}
+import {Section} from "./Classes/SectionClass";
+import {Course} from "./Classes/CourseClass";
 
 function createSectionObject(sectionNumber, startTime, finishTime) {
 	// Function receives two parameters: section number and time of the section
