@@ -6,18 +6,17 @@ import { Course } from "./Course";
 
 class Schedule {
 	/**
-	 * This constructor doesn't do anything except declaring the result map
-	 * that we will assign the result to.
+	 * This constructor initializes the internal Map that will store the courses and their sections.
 	 */
 	constructor() {
 		this._courses = {};
 	}
 
 	/**
-	 * addCoursesMap is a function to add the result map into the _courses variable
+	 * courses is a setter to add the result map into the _courses variable
 	 * after insuring that the parameter is a map and each instance of it is Course type!
 	 */
-	set coursesMap(map) {
+	set courses(map) {
 		if (!(map instanceof Map)) {
 			throw new Error("ERROR: Passed object is not a MAP!");
 		}
@@ -29,5 +28,9 @@ class Schedule {
 		}
 
 		this._courses = map;
+	}
+
+	get getCourses() {
+		return this._courses;
 	}
 }
