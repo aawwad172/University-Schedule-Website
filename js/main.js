@@ -1,5 +1,5 @@
-import {Section} from "./Classes/SectionClass";
-import {Course} from "./Classes/CourseClass";
+import {Section} from "./Classes/Section";
+import {Course} from "./Classes/Course";
 
 function createSectionObject(sectionNumber, startTime, finishTime) {
 	// Function receives two parameters: section number and time of the section
