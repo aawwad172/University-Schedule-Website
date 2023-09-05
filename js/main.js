@@ -1,5 +1,7 @@
-import {Section} from "./Classes/Section";
-import {Course} from "./Classes/Course";
+import { Section } from "./Classes/Section";
+import { Course } from "./Classes/Course";
+
+// -------------------------------------------------------------------------------------------
 
 function createSectionObject(sectionNumber, startTime, finishTime) {
 	// Function receives two parameters: section number and time of the section
@@ -8,8 +10,6 @@ function createSectionObject(sectionNumber, startTime, finishTime) {
 	return sectionObject; // Returning our newly created object with all its properties set up correctly!
 }
 
-// This is an array of objects to store the courses and each course has a section
-let Courses = [];
 function addCourseToArray(course) {
 	// This function to add the created objects into an array of objects!
 	if (course instanceof Course) {
@@ -27,66 +27,6 @@ function createCourseObject(Name, ...Sections) {
 	addCourseToArray(course);
 }
 
-// Interface Scripts ------------------------------------------------------------
-let Sections = [];
-$("#add-section-button").click(function () {
-	let courseName = $("course-name");
-	let name = courseName.val();
-
-	let sectionNumber = $("section-number");
-	let section = sectionNumber.val();
-
-	let sectionStartTime = $("section-start-time");
-	let startTime = sectionStartTime.val();
-
-	let sectionFinishTime = $("section-finish-time");
-	let finishTime = sectionFinishTime.val();
-
-	Courses.forEach((course) => {
-		// Checking if the Course is already in the Courses Array!
-		if (course.Name == name) {
-			window.alert("Course is already existed!");
-			return;
-		} else {
-			Sections.length = 0; // This for clearing the Array!
-			let object = createSectionObject(
-				sectionNumber,
-				sectionStartTime,
-				sectionFinishTime
-			);
-			Sections.push(object);
-		}
-	});
-
-	// Now you should clear the fields of the UI!
-	sectionNumber.val() = "";
-	sectionStartTime.val() = "";
-	sectionFinishTime.val() = "";
-});
-
-
-$("#add-another-course-button").click(function() {
-	let courseName = $("course-name");
-	let name = courseName.val();
-	// Now we will create a new object of the Course class:
-	let course = new Course(name, Sections);
-	Courses.push(course);
-
-	courseName.val() = "";
-	// Clear the Array of Sections:
-	Sections.length = 0;
-});
-
-// Here we will write the algorithm to calculate the schedule!
-let result = [];
-
-function createNewRow(course, sectionNumber) {
-	let row = $(`<tr> <td>${course.Name}</td> <td>${course.Sections[sectionNumber].SectionNumber}</td> <td>${course.Sections[sectionNumber].StartTime} - ${course.Sections[sectionNumber].FinishTime}</td></tr>`)
-	let table = $('#result-table');
-	// Adding the new row value to the DOM UI!
-	table.append(row);
-}
-
 // Sort sections based on finishTime
 function compareByFinishTime(sectionA, sectionB) {
 	const finishTimeA = new Date(`1970-01-01T${sectionA.finishTime}`);
@@ -94,13 +34,47 @@ function compareByFinishTime(sectionA, sectionB) {
 	return finishTimeA - finishTimeB;
 }
 
-$('start-calculating-button').click(function() {
-	// First we should sort the courses depending on the earliest finish time!
-	// Loop through each course and sort its sections
-	Courses.forEach(course => {
-		// Sort sections based on startTime (you can use compareByFinishTime for sorting by finishTime)
-		course.sections.sort(compareByFinishTime);
+function calculatingSchedule(courses) {
+	// Create a mapping between sections and their courses
+	// to map  it after we finish the result array!
+	const sectionToCourseMap = new Map();
+
+	// First we should add all the section of all the courses into 1 array to sort them
+	// depending on the earliest finish time!
+
+	let allSections = [];
+
+	for (const course of courses) {
+		for (const section of course.sections) {
+			sectionToCourseMap.set(section, course);
+			allSections.push(section);
+		}
+	}
+
+	// Sort sections based on startTime (you can use compareByFinishTime for sorting by finishTime)
+	allSections.sort(compareByFinishTime);
+
+	// Now we have all the sections of all courses inside one array called allSections and it's sorted
+	// based on the earliest finish time!
+	// Starting Computing the Schedule
+	const n = allSections.length;
+	const takenSections = [];
+	let endTime = "12:00 AM"; // Initialize with midnight
+
+	for (let i = 0; i < n; i++) {
+		const section = allSections[i];
+		if (section.startTime >= endTime) {
+			takenSections.push(section);
+			endTime = section.finishTime;
+		}
+	}
+
+	// Now, takenSections contains the sections in the schedule with no overlapping
+	// You can use sectionToCourseMap to associate sections with their corresponding courses
+	const schedule = takenSections.map((section) => {
+		const course = sectionToCourseMap.get(section);
+		return { course, section };
 	});
 
-	// todo: Complete implementing the Algorithm of calculating the schedule!
-});
+	return schedule;
+}

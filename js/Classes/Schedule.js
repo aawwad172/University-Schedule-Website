@@ -34,3 +34,5 @@ class Schedule {
 		return this._courses;
 	}
 }
+
+export default Schedule;

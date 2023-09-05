@@ -40,7 +40,7 @@ class Course {
 	}
 
 	// Getters for the class attributes
-	get name() {
+	get Name() {
 		return this._name;
 	}
 
