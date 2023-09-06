@@ -1,0 +1,16 @@
+{
+  "name": "university-schedule-website",
+  "version": "1.0.0",
+  "description": "A website for calculating university semester schedules.",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["university", "schedule", "website", "course", "section"],
+  "author": "Ahmad Awwad aawwad172@gmail.com",
+  "license": "ISC"
+}

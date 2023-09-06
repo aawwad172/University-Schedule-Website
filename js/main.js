@@ -37,12 +37,12 @@ function compareByFinishTime(sectionA, sectionB) {
 /**
  * Calculates a schedule based on the provided courses and days.
  * It uses the Earliest Finish Time approach to select non-overlapping sections.
- * 
+ *
  * @param {Course[]} courses - Array of the type Course that include the courses that we need to choose sections from.
  * @param {string[]} [days=["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]] - An array of days to filter the sections. Defaults to Sunday to Thursday.
- * @returns 
+ * @returns
  */
-function calculatingSchedule(
+export function calculatingSchedule(
 	courses,
 	days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"] // Default value if we didn't get any array of strings for the days!
 ) {
@@ -78,7 +78,7 @@ function calculatingSchedule(
 				}
 				if (
 					section.type === "Sunday-Tuesday-Thursday" &&
-					(section.day === "Sunday" || section.day === "Tuesday")
+					section.day === "Sunday-Tuesday"
 				) {
 					allSections.push(section);
 				}
@@ -97,20 +97,24 @@ function calculatingSchedule(
 	// Now we have all the sections of all courses inside one array called allSections and it's sorted
 	// based on the earliest finish time!
 	// Starting Computing the Schedule
-	const takenSections = [];
-	let endTime = "12:00 AM"; // Initialize with midnight
+	const selectedSections = [];
+	let lastFinishTime = "00:00"; // Initialize with midnight
 
-	for (let i = 0; i < allSections.length; i++) {
-		const section = allSections[i];
-		if (section.startTime >= endTime) {
-			takenSections.push(section);
-			endTime = section.finishTime;
+	for (const day of days) {
+		for (const course of courses) {
+			for (const section of allSections) {
+				if (section.day.includes(day) && section.startTime >= lastFinishTime) {
+					selectedSections.push(section);
+					lastFinishTime = section.finishTime;
+					break; // Exit the inner loop once a section is selected
+				}
+			}
 		}
 	}
 
-	// Now, takenSections contains the sections in the schedule with no overlapping
+	// Now, selectedSections contains the sections in the schedule with no overlapping
 	// You can use sectionToCourseMap to associate sections with their corresponding courses
-	const schedule = takenSections.map((section) => {
+	const schedule = selectedSections.map((section) => {
 		const course = sectionToCourseMap.get(section);
 		return { course, section };
 	});

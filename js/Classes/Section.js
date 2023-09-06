@@ -170,24 +170,24 @@ class Section {
 	}
 
 	/**
-	 * Checks if a given time string adheres to the "hh:mm AM/PM" format and has valid hour and minute values.
+	 * Checks if a given time string adheres to the "HH:mm" format and has valid hour and minute values.
 	 *
-	 * @param {string} timeString - The time string to validate in the "hh:mm AM/PM" format.
+	 * @param {string} timeString - The time string to validate in the "HH:mm" format.
 	 * @returns {boolean} True if the time string is valid; otherwise, false.
 	 */
 	isValidStartTime(startTimeString) {
-		const timePattern = /^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$/i;
+		const timePattern = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
 		return timePattern.test(startTimeString);
 	}
 
 	/**
-	 * Checks if a given finish time string adheres to the "hh:mm AM/PM" format and has valid hour and minute values.
+	 * Checks if a given finish time string adheres to the "HH:mm" format and has valid hour and minute values.
 	 *
-	 * @param {string} finishTimeString - The finish time string to validate in the "hh:mm AM/PM" format.
+	 * @param {string} finishTimeString - The finish time string to validate in the "HH:mm" format.
 	 * @returns {boolean} True if the finish time string is valid; otherwise, false.
 	 */
 	isValidFinishTime(finishTimeString) {
-		const timePattern = /^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$/i;
+		const timePattern = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
 		return timePattern.test(finishTimeString);
 	}
 }
