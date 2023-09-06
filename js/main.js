@@ -34,7 +34,18 @@ function compareByFinishTime(sectionA, sectionB) {
 	return finishTimeA - finishTimeB;
 }
 
-function calculatingSchedule(courses) {
+/**
+ * Calculates a schedule based on the provided courses and days.
+ * It uses the Earliest Finish Time approach to select non-overlapping sections.
+ * 
+ * @param {Course[]} courses - Array of the type Course that include the courses that we need to choose sections from.
+ * @param {string[]} [days=["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]] - An array of days to filter the sections. Defaults to Sunday to Thursday.
+ * @returns 
+ */
+function calculatingSchedule(
+	courses,
+	days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"] // Default value if we didn't get any array of strings for the days!
+) {
 	// Create a mapping between sections and their courses
 	// to map  it after we finish the result array!
 	const sectionToCourseMap = new Map();
@@ -47,7 +58,36 @@ function calculatingSchedule(courses) {
 	for (const course of courses) {
 		for (const section of course.sections) {
 			sectionToCourseMap.set(section, course);
-			allSections.push(section);
+
+			// Handle Online courses
+			if (section.mode === "Online") {
+				allSections.push(section);
+				continue; // No need to check for conflicts
+			}
+
+			// Handle Offline courses
+			if (section.mode === "Offline") {
+				allSections.push(section);
+			}
+
+			// Handle Blended courses
+			if (section.mode === "Blended") {
+				if (section.type === "Monday-Wednesday" && section.day === "Monday") {
+					// Assuming Monday is in-person for this example
+					allSections.push(section);
+				}
+				if (
+					section.type === "Sunday-Tuesday-Thursday" &&
+					(section.day === "Sunday" || section.day === "Tuesday")
+				) {
+					allSections.push(section);
+				}
+			}
+
+			// Labs are treated like Offline courses
+			if (section.type === "Lab") {
+				allSections.push(section);
+			}
 		}
 	}
 
@@ -57,11 +97,10 @@ function calculatingSchedule(courses) {
 	// Now we have all the sections of all courses inside one array called allSections and it's sorted
 	// based on the earliest finish time!
 	// Starting Computing the Schedule
-	const n = allSections.length;
 	const takenSections = [];
 	let endTime = "12:00 AM"; // Initialize with midnight
 
-	for (let i = 0; i < n; i++) {
+	for (let i = 0; i < allSections.length; i++) {
 		const section = allSections[i];
 		if (section.startTime >= endTime) {
 			takenSections.push(section);

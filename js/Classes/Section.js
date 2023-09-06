@@ -1,15 +1,42 @@
 /**
- * This Section class is used to create a new object of type section to store
- * section number and the duration time for each section (Start and Finish)!
+ * Represents a university course section.
+ *
+ * @class
  */
 class Section {
-	constructor(sectionNumber, startTime, finishTime) {
+	/**
+	 * Creates a new Section instance.
+	 *
+	 * @param {number} sectionNumber - The number of the section.
+	 * @param {string} startTime - The start time of the section in "hh:mm AM/PM" format.
+	 * @param {string} finishTime - The finish time of the section in "hh:mm AM/PM" format.
+	 * @param {(string|string[])} day - The day(s) on which the section occurs. Can be a single day (e.g., "Monday") or an array of days (e.g., ["Sunday", "Tuesday"]).
+	 * @param {string} mode - The mode of the course. Can be "Online", "Offline", or "Blended".
+	 * @param {string} type - The type of the course. Can be "Sunday-Tuesday-Thursday", "Monday-Wednesday", or "Lab".
+	 */
+	constructor(sectionNumber, startTime, finishTime, day, mode, type) {
 		this.setSectionNumber(sectionNumber);
 		this.setStartTime(startTime);
 		this.setFinishTime(finishTime);
+		this.setDay(day);
+		this.setMode(mode); // Setting the mode attribute (Online, Offline, Blended)
+		this.setType(type); // Setting the type attribute (Sunday-Tuesday-Thursday, Monday-Wednesday, Lab)
 	}
 
-	// Setters for the class attributes
+	/**
+	 * Accessor Properties (Getters and Setters) for the class.
+	 *
+	 * These accessors allow interaction with class properties as if accessing direct attributes.
+	 * For instance, use `instanceOfClass.startTime` to retrieve or set values instead of invoking a method.
+	 * Such design, where getters and setters are accessed like regular properties without parentheses,
+	 * is commonly known as "accessor properties" or "accessor methods".
+	 */
+
+	/**
+	 * Sets the section number.
+	 *
+	 * @param {number} sectionNumber - The number of the section to set.
+	 */
 	set setSectionNumber(sectionNumber) {
 		// sectionNumber : int
 		if (!Number.isInteger(sectionNumber)) {
@@ -18,6 +45,20 @@ class Section {
 		if (sectionNumber) this._sectionNumber = sectionNumber;
 	}
 
+	/**
+	 * Gets the section number.
+	 *
+	 * @returns {number} - The section number.
+	 */
+	get sectionNumber() {
+		return this._sectionNumber;
+	}
+
+	/**
+	 * Sets the start time of the section.
+	 *
+	 * @param {string} startTime - The start time in "hh:mm AM/PM" format.
+	 */
 	set setStartTime(startTime) {
 		if (!this.isValidStartTime(startTime)) {
 			throw new Error("Invalid startTime format");
@@ -25,6 +66,20 @@ class Section {
 		this._startTime = startTime;
 	}
 
+	/**
+	 * Gets the start time of the section.
+	 *
+	 * @returns {string} - The start time in "hh:mm AM/PM" format.
+	 */
+	get startTime() {
+		return this._startTime;
+	}
+
+	/**
+	 * Sets the finish time of the section.
+	 *
+	 * @param {string} finishTime - The finish time in "hh:mm AM/PM" format.
+	 */
 	set setFinishTime(finishTime) {
 		if (!this.isValidFinishTime(finishTime)) {
 			throw new Error("Invalid finishTime format!");
@@ -33,23 +88,85 @@ class Section {
 	}
 
 	/**
-	 * Getters for the class
-	 * Those getters will be called without using the ()
-	 * like this `instanceOfClass.startTime`
-	 * The method of creating getters and setters that are accessed like regular properties
-	 * (without using parentheses) is often referred to as
-	 * "accessor properties" or "accessor methods".
+	 * Gets the finish time of the section.
+	 *
+	 * @returns {string} - The finish time in "hh:mm AM/PM" format.
 	 */
-	get sectionNumber() {
-		return this._sectionNumber;
-	}
-
-	get startTime() {
-		return this._startTime;
-	}
-
 	get finishTime() {
 		return this._finishTime;
+	}
+
+	/**
+	 * Sets the day(s) of the section.
+	 *
+	 * @param {(string|string[])} day - The day(s) to set. Can be a single day (e.g., "Monday") or an array of days (e.g., ["Sunday", "Tuesday"]).
+	 */
+	set setDay(day) {
+		const validDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+
+		if (!validDays.includes(day)) {
+			throw new Error(
+				"Invalid day provided. It should be one of Sunday, Monday, ... Saturday."
+			);
+		}
+		this._day = day;
+	}
+
+	/**
+	 * Gets the day(s) of the section.
+	 *
+	 * @returns {(string|string[])} - The day(s) of the section.
+	 */
+	get day() {
+		return this._day;
+	}
+
+	/**
+	 * Sets the mode of the section.
+	 *
+	 * @param {string} mode - The mode to set. Must be one of "Online", "Offline", "Blended".
+	 */
+	set setMode(mode) {
+		const validModes = ["Online", "Offline", "Blended"];
+		if (!validModes.includes(mode)) {
+			throw new Error(
+				"Invalid mode provided. It should be one of Online, Offline, Blended."
+			);
+		}
+		this._mode = mode;
+	}
+
+	/**
+	 * Gets the mode of the section.
+	 *
+	 * @returns {string} - The mode of the section.
+	 */
+	get mode() {
+		return this._mode;
+	}
+
+	/**
+	 * Sets the type of the section.
+	 *
+	 * @param {string} type - The type to set. Must be one of "Sunday-Tuesday-Thursday", "Monday-Wednesday", "Lab".
+	 */
+	set setType(type) {
+		const validTypes = ["Sunday-Tuesday-Thursday", "Monday-Wednesday", "Lab"];
+		if (!validTypes.includes(type)) {
+			throw new Error(
+				"Invalid type provided. It should be one of Sunday-Tuesday-Thursday, Monday-Wednesday, Lab."
+			);
+		}
+		this._type = type;
+	}
+
+	/**
+	 * Gets the type of the section.
+	 *
+	 * @returns {string} - The type of the section.
+	 */
+	get type() {
+		return this._type;
 	}
 
 	/**
